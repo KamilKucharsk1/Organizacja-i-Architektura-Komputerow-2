@@ -1,0 +1,1 @@
+/usr/bin/cc  -fPIC -g   CMakeFiles/untitled1.dir/main.c.o CMakeFiles/untitled1.dir/test.c.o  -o untitled1 -ldl 
