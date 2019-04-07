@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/Organizacja_i_Architektura_Komputerow_2.dir/main.c.o  -o Organizacja_i_Architektura_Komputerow_2 
