@@ -15,6 +15,9 @@ int foo2(){
     return 123;
 }
 
+int foo3(){
+    return 123;
+}
 
 
 int main() {
@@ -23,6 +26,14 @@ int main() {
     int64_t *origFunc = (int64_t*)&foo;
     int64_t *newFunc = (int64_t*)&foo2;
 
+    int *f = (int*)&foo3;
+
+    printf("p: %p | d: %p\n", origFunc, *origFunc);
+    printf("p: %p | d: %p\n", origFunc+4, *(origFunc+4));
+    printf("p: %p | d: %p\n", origFunc+8, *(origFunc+8));
+    printf("p: %p | d: %p\n", origFunc+12, *(origFunc+12));
+    printf("p: %p | d: %p\n", origFunc+16, *(origFunc+16));
+    printf("++++++");
     int32_t offset = (int64_t)newFunc - ((int64_t)origFunc + 5 * sizeof(char));
 
     //Make the memory containing the original funcion writable
@@ -38,6 +49,13 @@ int main() {
     int64_t instruction = 0xe9 | offset << 8;
     *origFunc = instruction;
 
+    printf("p: %p | d: %p\n", origFunc, *origFunc);
+    printf("p: %p | d: %p\n", origFunc+4, *(origFunc+4));
+    printf("p: %p | d: %p\n", origFunc+8, *(origFunc+8));
+    printf("p: %p | d: %p\n", origFunc+12, *(origFunc+12));
+    printf("p: %p | d: %p\n", origFunc+16, *(origFunc+16));
+    printf("++++++");
+    
     printf("Replaced\n");
     printf("Value is: %d\n" ,foo());
 }
