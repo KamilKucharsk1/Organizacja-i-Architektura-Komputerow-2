@@ -2,86 +2,42 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <sys/mman.h>
+#include <unistd.h>
+#include <stdint.h>
 
-int* foo(){
-    int* p = 5;
-    return p;
+int foo() {
+    printf("Calling original function!\n");
+    return 1;
 }
 
-void swap(int *p, int *p2){
-    *p = *p2;
+int foo2(){
+    printf("Calling replaced function!\n");
+    return 123;
 }
 
-int* fooOther(){
-    int *p = 88;
-    return p;
-}
+
 
 int main() {
-    int *t = 0;
-    int *t2 = fooOther();
-    int *a = 123;
-    int *b = malloc(sizeof(int));
+    printf("Value is: %d\n" ,foo());
 
-    //mprotect(a, sizeof(int), PROT_EXEC);
-    //mprotect(t, sizeof(int), PROT_EXEC);
+    int64_t *origFunc = (int64_t*)&foo;
+    int64_t *newFunc = (int64_t*)&foo2;
 
-    bool exit = false;
-    printf("Started!\n");
-    while(true){
-        if(exit) break;
+    int32_t offset = (int64_t)newFunc - ((int64_t)origFunc + 5 * sizeof(char));
 
-        char c = getchar();
+    //Make the memory containing the original funcion writable
+    //Code from http://stackoverflow.com/questions/20381812/mprotect-always-returns-invalid-arguments
+    size_t pageSize = sysconf(_SC_PAGESIZE);
+    uintptr_t start = (uintptr_t)origFunc;
+    uintptr_t end = start + 1;
+    uintptr_t pageStart = start & -pageSize;
 
-        switch (c){
-            case '1':
-                printf("DATA t:\n");
-                printf("&Address: %p\n", &t);
-                printf("Address: %p\n", t);
-                printf("Value: %d\n", t);
-                printf("&Value inne: %d\n", &t);
-                break;
-            case '2':
-                printf("DATA t2:\n");
-                printf("&Address: %p\n", &t2);
-                printf("Address: %p\n", t2);
-                printf("Value: %d\n", t2);
-                printf("&Value inne: %d\n", &t2);
-                break;
-            case '3':
-                t = foo();
-                printf("t assigned..\n");
-                break;
-            case '4':
-                //*a = *t;
-                swap(&t, &t2);
-                printf("Swapped..\n");
-                break;
-            case '5':
-                t2 = 666;
-                printf("t2 changed..\n");
-                break;
-            case '6':
-                printf("DATA a:\n");
-                printf("&Address: %p\n", &a);
-                printf("Address: %p\n", a);
-                printf("Value: %d\n", a);
-                printf("&Value inne: %d\n", &a);
-                break;
-            case '7':
-                printf("DATA b:\n");
-                printf("&Address: %p\n", &b);
-                printf("Address: %p\n", b);
-                printf("Value: %d\n", b);
-                printf("&Value inne: %d\n", &b);
-                break;
+    mprotect((void *)pageStart, end - pageStart, PROT_READ | PROT_WRITE | PROT_EXEC);
 
-            case 'e':
-                printf("ending..\n");
-                exit = true;
-                break;
-        }
-    }
-    printf("Exited.\n");
-    return 0;
+    //Insert the jump instruction at the beginning of the original function
+    int64_t instruction = 0xe9 | offset << 8;
+    *origFunc = instruction;
+
+    printf("Replaced\n");
+    printf("Value is: %d\n" ,foo());
 }

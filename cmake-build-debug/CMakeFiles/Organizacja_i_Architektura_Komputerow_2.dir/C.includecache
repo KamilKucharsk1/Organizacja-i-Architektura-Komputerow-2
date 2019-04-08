@@ -15,4 +15,8 @@ stdlib.h
 -
 sys/mman.h
 -
+unistd.h
+-
+stdint.h
+-
 
