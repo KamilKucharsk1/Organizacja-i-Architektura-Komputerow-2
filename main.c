@@ -34,35 +34,48 @@ int main() {
         char c = getchar();
 
         switch (c){
-            case 'r':
-                printf("DATA:\n");
+            case '1':
+                printf("DATA t:\n");
                 printf("&Address: %p\n", &t);
                 printf("Address: %p\n", t);
                 printf("Value: %d\n", t);
                 printf("&Value inne: %d\n", &t);
                 break;
-            case 'a':
-                printf("DATA:\n");
+            case '2':
+                printf("DATA t2:\n");
+                printf("&Address: %p\n", &t2);
+                printf("Address: %p\n", t2);
+                printf("Value: %d\n", t2);
+                printf("&Value inne: %d\n", &t2);
+                break;
+            case '3':
+                t = foo();
+                printf("t assigned..\n");
+                break;
+            case '4':
+                //*a = *t;
+                swap(&t, &t2);
+                printf("Swapped..\n");
+                break;
+            case '5':
+                t2 = 666;
+                printf("t2 changed..\n");
+                break;
+            case '6':
+                printf("DATA a:\n");
                 printf("&Address: %p\n", &a);
                 printf("Address: %p\n", a);
                 printf("Value: %d\n", a);
                 printf("&Value inne: %d\n", &a);
                 break;
-            case 's':
-                //*a = *t;
-                swap(&t, &t2);
-                printf("Swapped..\n");
-                break;
-            case 'b':
-                printf("DATA:\n");
+            case '7':
+                printf("DATA b:\n");
                 printf("&Address: %p\n", &b);
                 printf("Address: %p\n", b);
                 printf("Value: %d\n", b);
                 printf("&Value inne: %d\n", &b);
                 break;
-            case 'c':
-                t = foo();
-                break;
+
             case 'e':
                 printf("ending..\n");
                 exit = true;
