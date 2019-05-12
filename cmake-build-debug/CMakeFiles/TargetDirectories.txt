@@ -1,3 +1,0 @@
-/home/michal/Pulpit/ak2p/Organizacja-i-Architektura-Komputerow-2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/michal/Pulpit/ak2p/Organizacja-i-Architektura-Komputerow-2/cmake-build-debug/CMakeFiles/Organizacja_i_Architektura_Komputerow_2.dir
-/home/michal/Pulpit/ak2p/Organizacja-i-Architektura-Komputerow-2/cmake-build-debug/CMakeFiles/edit_cache.dir
